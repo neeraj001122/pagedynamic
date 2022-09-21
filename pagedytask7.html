@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+      var arr = [{person: 'post1'},
+                 {person: 'post2'}
+                     ]
+       
+        console.log('person1: shows ticket');
+        console.log('person2: shows ticket'); 
+
+        async function creatpost(post)
+        {
+          const addpost = new Promise((resolve,reject) => { 
+          setTimeout(() => {
+          resolve(arr.push(post))
+        }, 2000)
+        })
+        }
+        creatpost('person3').then((post) => {
+          return console.log(arr);
+        })
+        
+
+       const preMovie = async () => {
+
+       const promisWifeBringingTicks = new Promise((resolve, reject) => {
+       setTimeout(() => resolve('ticket'), 3000)
+     });
+
+        
+      const getpopcorn = new Promise((resolve, reject) => resolve(`popcorn`))
+
+      const addbutter = new Promise((resolve,reject) => resolve('butter'))
+      const getColdDrinks  = new Promise((resolve,reject) => resolve('coldDrink'))
+
+      let ticket = await promisWifeBringingTicks;
+      console.log('wife: tickets are here')
+      console.log('husband: we should go in')
+      console.log('wife: no I am hungry')
+     
+      const popcorn = await getpopcorn;
+
+      console.log('husband: we should go in')
+      console.log('wife: no I need butter')
+
+      const butter  = await addbutter;
+
+      console.log('husband: I got the butter')
+      console.log('wife: we should go in then')
+      console.log('husband: Thanks for the reminder')
+      
+      const coldDrink = await getColdDrinks;
+     
+      console.log('wife: we should get coldrink too')
+      console.log('husband: just leave it already okay I am bringing')
+
+      return ticket
+       }
+
+       preMovie().then((m) => {
+            return console.log(m)
+       })
+
+        console.log('person3: shows ticket');
+        console.log('person4: shows ticket');
+    </script>
+</body>
+</html>
