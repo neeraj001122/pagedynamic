@@ -1,0 +1,94 @@
+<html>
+    <body>
+        <header><h1>Appoinment booking</h1></header><br>
+        <form>
+            <div>
+                <label id="namesis"> Name:-</label>
+            <input type="text" name="username">
+        </div>
+        <br>
+        <div>
+            <label>EmailId:-</label>
+            <input type="text" name="emailid">
+        </div>
+        <br>
+        <div>
+            <label>Phone:-</label>
+            <input type="text" name="phone">
+        </div>
+        <br>
+        <div>
+            <button>Submit</button>
+        </div>
+        </form>
+        <h2 class="title">Items</h2>
+        <ul id="items" class="list-group">
+        </ul>
+        <!-- <script src="task12.js"></script> -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js "></script>
+        <script> 
+        var forms = document.querySelector('form')
+
+var items = document.querySelector('#items')
+
+forms.addEventListener('submit', addobj);
+
+window.addEventListener('DOMContentLoaded', getuserfromserver)
+function addobj(e)
+{
+    e.preventDefault();
+        var Name = e.target.username.value;
+        var Email = e.target.emailid.value;
+        var Phone = e.target.phone.value;
+    var userdetails =
+     {
+        name1 : Name,
+        email1 : Email,
+        phone1 : Phone
+    }
+
+    axios.post("https://crudcrud.com/api/fcbfd5cbb93f4525bd5d2751ece135fc/appointmentData", userdetails)
+    .then((response) => {
+        getlocale(response.data)
+        console.log(response.data)
+    })
+     
+    // var details_string = JSON.stringify(userdetails)
+    // localStorage.setItem(Name, details_string);
+    // var details = JSON.parse(localStorage.getItem(Name))
+    
+    // for (x in localStorage){
+    //     console.log(localStorage[x]);
+    //     li.appendChild(document.createTextNode(details.name1))     
+         
+    //     }
+}
+
+function getuserfromserver()
+{
+    var data = axios.get("https://crudcrud.com/api/fcbfd5cbb93f4525bd5d2751ece135fc/appointmentData")
+    .then((res) => {
+        console.log(res.data)
+        var arr = res.data
+      for(var i=0;i<arr.length;i++)
+      {
+        getlocale(arr[i])
+      }
+    })
+    .then((err) => {
+        console.log(err)
+    })
+}
+
+function getlocale(user)
+{
+  const parentNode = document.getElementById('items');
+  const childHTML = `<li id=${user.name1}> ${user._id} - ${user.name1} - ${user.email1} - ${user.phone1}
+  <button onclick = "deleteUser('${user.expense}')"> Delete User </button>
+</li>`
+
+parentNode.innerHTML = parentNode.innerHTML + childHTML;
+}
+        </script>
+    </body>
+</html>
