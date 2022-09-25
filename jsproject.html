@@ -1,0 +1,104 @@
+<html>
+    <body>
+            <h1>Expense tracker</h1>
+            <form id="form">
+                <div>
+                <label>Expense Amount:-</label>
+                <input id="number" type="number">
+                </div>
+                <br>
+                <div>
+                    <label>Discription:-</label>
+                    <input id="discription" type="text">
+                </div>
+                <br>
+                <div>
+                    <label>Catogery</label>
+                    <input id="catogery" type="text">
+                </div>
+                <br>
+                <div>
+                    <input type="submit">
+                </div>
+            </form>
+            <ul id="items" class="list-group">
+            </ul>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js "></script>
+            <script>
+                var form = document.getElementById('form')
+                form.addEventListener("submit", userdata)
+
+                window.addEventListener("DOMContentLoaded", getuserfromserver)
+
+                function getuserfromserver()
+                {
+                    axios.get("https://crudcrud.com/api/bcbeba9477d74900b1953a1e773acca3/expensedata")
+                    .then((res) => {
+                        var arr = res.data
+                        for(var i=0;i<arr.length;i++)
+                        {
+                            showonscreen(arr[i])
+                        }
+                    })
+                      
+                }
+
+                function userdata(e)
+                {
+                    e.preventDefault();
+                    var expense = document.getElementById('number').value;
+                    var discription = document.getElementById('discription').value;
+                    var catogery= document.getElementById('catogery').value;
+
+                    var userdetails = {
+                        expense1: expense,
+                        discription1: discription,
+                        catogery1: catogery
+                    }
+                   
+                    axios.post("https://crudcrud.com/api/bcbeba9477d74900b1953a1e773acca3/expensedata", userdetails)
+                    .then((response) => {
+                        console.log(response.data)
+                        showonscreen(response.data)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+                } 
+
+
+                function showonscreen(user)
+                {
+                    var items = document.getElementById('items');
+                    var childHTML = `<li id=${user._id}> ${user.expense1} - ${user.discription1} - ${user.catogery1} - ${user._id}
+                        <button onclick = "deleteUser('${user._id}')"> Delete User </button>
+                        <button onclick = "editeuser('${user.expense1}','${user.discription1}','${user.catogery1}','${user._id}')">Edite user</button>
+                        </li>`
+                    items.innerHTML = items.innerHTML+childHTML;
+                }  
+
+                function deleteUser(id)
+                {
+                    axios.delete(`https://crudcrud.com/api/bcbeba9477d74900b1953a1e773acca3/expensedata/${id}`)
+                    .then((res) => {
+                        var items = document.getElementById('items');
+                        var nodetobedeleted = document.getElementById(id);
+                        items.removeChild(nodetobedeleted) 
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+                }   
+                
+                function editeuser(expense, discription, catogery, id)
+                {
+                    document.getElementById('number').value = expense
+                    document.getElementById('discription').value = discription
+                    document.getElementById('catogery').value = catogery
+
+                    deleteUser(id)
+                }
+
+            </script>
+    </body>
+</html>
